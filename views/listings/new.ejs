@@ -5,40 +5,51 @@
         <br>
         <div class="col-8 offset-2">
             <h2>New listing</h2>
-            <form method="post" action="/listings">
+            <form method="post" action="/listings" novalidate class="needs-validation">
 
                 <div class="mb-3">
                     <label for="title" class="form label">Enter Title</label>
-                    <input name="listing[title]" placeholder="Enter title" class="form-control">
+                    <input name="listing[title]" placeholder="Enter title" class="form-control" required>
+                    <div class="valid-feedback">Title looks good</div>
+                    <div class="invalid-feedback">Provide Title</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="description" class="form label">Enter Description</label>
-                    <textarea name="listing[description]" placeholder="Enter description" class="form-control"></textarea>
+                    <textarea name="listing[description]" placeholder="Enter description" class="form-control" required></textarea>
+                    <div class="valid-feedback">Description looks good</div>
+                    <div class="invalid-feedback">Provide Description</div>
                 </div>
         
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form label">Enter Price</label>
-                        <input name="listing[price]" value="100" type="number" class="form-control">
+                        <input name="listing[price]" value="100" class="form-control" required>
+                        <div class="valid-feedback">Price looks good</div>
+                        <div class="invalid-feedback">Provide Price</div>
                     </div>
             
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form label">Enter Country</label>
-                        <input name="listing[country]" placeholder="eg: India" class="form-control">
+                        <input name="listing[country]" placeholder="eg: India" class="form-control" required>
+                        <div class="valid-feedback">Country looks good</div>
+                        <div class="invalid-feedback">Provide Conuntry Name</div>
                     </div>
                 </div>
         
                 <div class="mb-3">
                     <label for="location" class="form label">Enter Location</label>
-                    <input name="listing[location]" placeholder="eg: Sea Side" class="form-control">
+                    <input name="listing[location]" placeholder="eg: Sea Side" class="form-control" required>
+                    <div class="valid-feedback">location looks good</div>
+                    <div class="invalid-feedback">Provide Location</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="image.url" class="form label">Enter Image Url</label>
-                    <input name="listing[image.url]" placeholder="img url/link" class="form-control">
+                    <input name="listing[image.url]" placeholder="img url/link" class="form-control" required>
+                    <div class="valid-feedback">img looks good</div>
+                    <div class="invalid-feedback">Provide img-link</div>
                 </div> 
-           
                 <hr>
                 <button class="btn btn-dark add-btn">Add</button>
                 <br>
