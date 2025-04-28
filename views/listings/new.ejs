@@ -1,0 +1,85 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+
+    <div class="row">
+        <br>
+        <div class="col-8 offset-2">
+            <h2>New Listing</h2>
+            <form method="post" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="title" class="form label">Enter Title</label>
+                    <input name="listing[title]" placeholder="Enter title" class="form-control" required>
+                    <div class="valid-feedback">Title looks good</div>
+                    <div class="invalid-feedback">Provide Title</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form label">Enter Description</label>
+                    <textarea name="listing[description]" placeholder="Enter description" class="form-control" required></textarea>
+                    <div class="valid-feedback">Description looks good</div>
+                    <div class="invalid-feedback">Provide Description</div>
+                </div>
+        
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form label">Enter Price</label>
+                        <input name="listing[price]" value="100" class="form-control" required>
+                        <div class="valid-feedback">Price looks good</div>
+                        <div class="invalid-feedback">Provide Price</div>
+                    </div>
+            
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form label">Enter Country</label>
+                        <input name="listing[country]" placeholder="e.g. India" class="form-control" required>
+                        <div class="valid-feedback">Country looks good</div>
+                        <div class="invalid-feedback">Provide Country Name</div>
+                    </div>
+                </div>
+        
+                <div class="mb-3">
+                    <label for="location" class="form label">Enter Address / Location</label>
+                    <input 
+                      name="listing[location]" 
+                      placeholder="e.g. Goa, India or Central Park, NYC" 
+                      class="form-control" 
+                      required>
+                    <div class="valid-feedback">Location looks good</div>
+                    <div class="invalid-feedback">Provide a valid address</div>
+                  </div>
+
+                <!-- Category Selection -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Select Category</label>
+                    <select name="listing[category]" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="Trending">Trending</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Cities">Cities</option>
+                        <option value="Mountains">Mountains</option>
+                        <option value="Castel">Castel</option>
+                        <option value="Pools">Pools</option>
+                        <option value="Camping">Camping</option>
+                        <option value="Farms">Farms</option>
+                        <option value="Sea beach">Sea beach</option>
+                        <option value="Arctic">Arctic</option>
+                    </select>
+                    <div class="valid-feedback">Category looks good</div>
+                    <div class="invalid-feedback">Please select a category</div>
+                </div>                                
+                
+
+                <div class="mb-3">
+                    <label for="image.url" class="form label">Upload Image</label>
+                    <input name="listing[image]" placeholder="img url/link" class="form-control" type="file">
+                    <div class="valid-feedback">Image looks good</div>
+                    <div class="invalid-feedback">Provide an image link</div>
+                </div> 
+
+                <hr>
+                <button class="btn btn-dark add-btn">Add</button>
+                <br>
+            </form>
+        </div>
+    </div>
+</body>

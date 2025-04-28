@@ -1,0 +1,237 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+    /* Color Variables */
+    :root {
+        --primary-blue: #1d3557;
+        --secondary-blue: #457b9d;
+        --light-blue: #a8dadc;
+        --white: #f1faee;
+        --red: #e63946;
+        --gray: #f8f9fa;
+        --dark-gray: #495057;
+    }
+
+    /* Base Styles */
+    .admin-container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Header Styles */
+    .admin-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .admin-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .admin-subtitle {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--secondary-blue);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Table Styles */
+    .admin-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: white;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-table thead th {
+        background-color: var(--primary-blue);
+        color: white;
+        padding: 1rem;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .admin-table tbody tr {
+        transition: background-color 0.2s;
+    }
+
+    .admin-table tbody tr:nth-child(even) {
+        background-color: var(--gray);
+    }
+
+    .admin-table tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .admin-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-danger {
+        background-color: var(--red);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c1121f;
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-danger {
+        background-color: transparent;
+        color: var(--red);
+        border: 1px solid var(--red);
+    }
+
+    .btn-outline-danger:hover {
+        background-color: var(--red);
+        color: white;
+    }
+
+    /* Listing Styles */
+    .listing-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+    }
+
+    .listing-link {
+        color: var(--primary-blue);
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .listing-link:hover {
+        text-decoration: underline;
+        color: var(--secondary-blue);
+    }
+
+    /* Utility Classes */
+    .text-center {
+        text-align: center;
+    }
+
+    .no-data {
+        color: var(--dark-gray);
+        font-style: italic;
+        padding: 1rem;
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .alert-info {
+        background-color: #e7f5ff;
+        color: #1864ab;
+    }
+    
+    .admin-badge {
+        background-color: var(--light-blue);
+        color: var(--primary-blue);
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="admin-container">
+    <header class="admin-header">
+        <h1 class="admin-title">Admin Dashboard</h1>
+        <h2 class="admin-subtitle">Manage Users</h2>
+    </header>
+
+    <% if (users.length === 0) { %>
+        <div class="alert alert-info">No users found.</div>
+    <% } else { %>
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th class="text-center">Listings</th>
+                        <th>Listings Details</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td>
+                                <strong><%= user.username %></strong>
+                                <% if (user._id.equals(ADMIN_ID)) { %>
+                                    <span class="admin-badge">Admin</span>
+                                <% } %>
+                            </td>
+                            <td><%= user.email %></td>
+                            <td class="text-center">
+                                <span class="badge" style="background-color: var(--light-blue); color: var(--primary-blue); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">
+                                    <%= user.listings.length %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (user.listings.length > 0) { %>
+                                    <ul style="list-style: none; padding: 0; margin: 0;">
+                                        <% user.listings.forEach(listing => { %>
+                                            <li class="listing-item">
+                                                <a href="/listings/<%= listing._id %>" class="listing-link" target="_blank">
+                                                    <%= listing.title %>
+                                                </a>
+                                                <form action="/admin/listings/<%= listing._id %>?_method=DELETE" method="POST" style="display: inline;">
+                                                    <button type="submit" class="btn btn-outline-danger" style="padding: 0.25rem 0.5rem;" onclick="return confirm('Delete this listing?')">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        <% }) %>
+                                    </ul>
+                                <% } else { %>
+                                    <span class="no-data">No listings</span>
+                                <% } %>
+                            </td>
+                            <td class="text-center">
+                                <% if (!user._id.equals(ADMIN_ID)) { %>
+                                    <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user and ALL their listings?')">
+                                            Delete User
+                                        </button>
+                                    </form>
+                                <% } else { %>
+                                    <span class="no-data">Admin protected</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+</div>

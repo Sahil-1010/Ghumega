@@ -1,0 +1,85 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h2>Edit Listing</h2>
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT"
+                class="needs-validation" enctype="multipart/form-data">
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Enter Title</label>
+                    <input name="listing[title]" value="<%= listing.title %>" class="form-control" required>
+                    <div class="valid-feedback">Title looks good</div>
+                    <div class="invalid-feedback">Provide Title</div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Enter Description</label>
+                    <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+                    <div class="valid-feedback">Description looks good</div>
+                    <div class="invalid-feedback">Provide Description</div>
+                </div> 
+
+                <!-- Price & Country -->
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Enter Price</label>
+                        <input name="listing[price]" value="<%= listing.price %>" class="form-control" type="number" required>
+                        <div class="valid-feedback">Price looks good</div>
+                        <div class="invalid-feedback">Provide Price</div>
+                    </div>
+                    <div class="mb-3 col-md-4">
+                        <label for="country" class="form-label">Enter Country</label>
+                        <input name="listing[country]" value="<%= listing.country %>" class="form-control" required>
+                        <div class="valid-feedback">Country looks good</div>
+                        <div class="invalid-feedback">Provide Country Name</div>
+                    </div>
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Enter Location</label>
+                    <input name="listing[location]" value="<%= listing.location %>" class="form-control" required>
+                    <div class="valid-feedback">Location looks good</div>
+                    <div class="invalid-feedback">Provide Location</div>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Select Category</label>
+                    <select name="listing[category]" class="form-control" required>
+                        <option value="Trending" <%= listing.category === 'Trending' ? 'selected' : '' %>>Trending</option>
+                        <option value="Rooms" <%= listing.category === 'Rooms' ? 'selected' : '' %>>Rooms</option>
+                        <option value="Cities" <%= listing.category === 'Cities' ? 'selected' : '' %>>Cities</option>
+                        <option value="Mountains" <%= listing.category === 'Mountains' ? 'selected' : '' %>>Mountains</option>
+                        <option value="Castel" <%= listing.category === 'Castel' ? 'selected' : '' %>>Castel</option>
+                        <option value="Pools" <%= listing.category === 'Pools' ? 'selected' : '' %>>Pools</option>
+                        <option value="Camping" <%= listing.category === 'Camping' ? 'selected' : '' %>>Camping</option>
+                        <option value="Farms" <%= listing.category === 'Farms' ? 'selected' : '' %>>Farms</option>
+                        <option value="Sea beach" <%= listing.category === 'Sea beach' ? 'selected' : '' %>>Sea beach</option>
+                        <option value="Arctic" <%= listing.category === 'Arctic' ? 'selected' : '' %>>Arctic</option>
+                    </select>
+                    <div class="valid-feedback">Category looks good</div>
+                    <div class="invalid-feedback">Please select a category</div>
+                </div>
+
+                <!-- Optional Image Upload -->
+                <div class="mb-3">
+                    <img src="<%= originalImage %>" alt="Existing Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                    <p>Current Image</p>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload New Image</label>
+                    <input name="listing[image]" class="form-control" type="file">
+                    <div class="form-text">Leave blank to keep current image</div>
+                </div>
+                
+                <hr>
+                <button class="btn btn-dark add-btn">Update</button>
+            </form>
+        </div>
+    </div>
+</body>

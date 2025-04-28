@@ -1,0 +1,32 @@
+<% if(success && success.length){ %>
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show mx-auto mt-4 shadow" role="alert" style="max-width: 600px;">
+        <i class="bi bi-check-circle-fill me-2"></i> <!-- ✅ Fancy Icon -->
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+<% if(error && error.length){ %>
+    <div id="errorAlert" class="alert alert-danger alert-dismissible fade show mx-auto mt-4 shadow" role="alert" style="max-width: 600px;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> <!-- ⚠️ Fancy Icon -->
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+<script>
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(() => {
+        const successAlert = document.getElementById('successAlert');
+        if (successAlert) {
+            const alert = new bootstrap.Alert(successAlert);
+            alert.close();
+        }
+
+        const errorAlert = document.getElementById('errorAlert');
+        if (errorAlert) {
+            const alert = new bootstrap.Alert(errorAlert);
+            alert.close();
+        }
+    }, 5000);
+</script>

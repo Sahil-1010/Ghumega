@@ -1,0 +1,274 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .filters-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex-grow: 1;
+  }
+
+  .filter {
+    text-align: center;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-width: 60px;
+  }
+
+  .filter:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  .filter p {
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+    white-space: nowrap;
+  }
+
+  .filter-op {
+    font-size: 1.75rem;
+  }
+
+  .filter.selected {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    opacity: 1 !important;
+  }
+
+  .tax-toggle-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .tax-toggle {
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 1rem;
+    height: 3.5rem;
+    padding: 0 1rem;
+    margin-left: auto;
+  }
+
+  .tax-info {
+    display: none;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  .listingLink {
+    text-decoration: none;
+  }
+
+  .main-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .main-card:hover {
+    transform: scale(1.02);
+    box-shadow: 15px 10px 10px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .card-img-top {
+    object-fit: cover;
+    height: 20rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .filter-group {
+      justify-content: flex-start;
+      width: 100%;
+    }
+    
+    /* .tax-toggle-container {
+      justify-content: flex-end;
+    }
+    
+    .tax-toggle {
+      margin-right: 0;
+    }
+     */
+    .filter {
+      min-width: 50px;
+    }
+    
+    .filter p {
+      font-size: 0.65rem;
+    }
+    
+    .filter-op {
+      font-size: 1.25rem;
+    }
+    
+    .card-img-top {
+      height: 15rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .filters {
+      justify-content: space-between;
+    }
+    
+    .filter-group {
+      justify-content: center;
+      gap: 2rem;
+    }
+  }
+</style>
+
+
+<div class="filters-container">
+  <div class="filters" id="filters">
+    <div class="filter-group">
+      <div class="filter <%= category === 'Trending' ? 'selected' : '' %>" onclick="filterByCategory('Trending')">
+        <div>
+          <i class="filter-op fa-solid fa-fire fa-flip"></i>
+        </div>
+        <p>Trending</p>
+      </div>
+
+      <div class="filter <%= category === 'Rooms' ? 'selected' : '' %>" onclick="filterByCategory('Rooms')">
+        <div>
+          <i class="filter-op fa-solid fa-bed"></i>
+        </div>
+        <p>Rooms</p>
+      </div>
+
+      <div class="filter <%= category === 'Cities' ? 'selected' : '' %>" onclick="filterByCategory('Cities')">
+        <div>
+          <i class="filter-op fa-solid fa-mountain-city"></i>
+        </div>
+        <p>Cities</p>
+      </div>
+
+      <div class="filter <%= category === 'Mountains' ? 'selected' : '' %>" onclick="filterByCategory('Mountains')">
+        <div>
+          <i class="filter-op fa-solid fa-mountain-sun"></i>
+        </div>
+        <p>Mountains</p>
+      </div>
+
+      <div class="filter <%= category === 'Castel' ? 'selected' : '' %>" onclick="filterByCategory('Castel')">
+        <div>
+          <i class="filter-op fa-solid fa-chess-rook"></i>
+        </div>
+        <p>Castel</p>
+      </div>
+
+      <div class="filter <%= category === 'Pools' ? 'selected' : '' %>" onclick="filterByCategory('Pools')">
+        <div>
+          <i class="filter-op fa-solid fa-person-swimming"></i>
+        </div>
+        <p>Pools</p>
+      </div>
+
+      <div class="filter <%= category === 'Camping' ? 'selected' : '' %>" onclick="filterByCategory('Camping')">
+        <div>
+          <i class="filter-op fa-solid fa-campground"></i>
+        </div>
+        <p>Camping</p>
+      </div>
+
+      <div class="filter <%= category === 'Farms' ? 'selected' : '' %>" onclick="filterByCategory('Farms')">
+        <div>
+          <i class="filter-op fa-solid fa-tractor"></i>
+        </div>
+        <p>Farms</p>
+      </div>
+
+      <div class="filter <%= category === 'Sea beach' ? 'selected' : '' %>" onclick="filterByCategory('Sea beach')">
+        <div>
+          <i class="filter-op fa-solid fa-umbrella-beach"></i>
+        </div>
+        <p>Sea beach</p>
+      </div>
+
+      <div class="filter <%= category === 'Arctic' ? 'selected' : '' %>" onclick="filterByCategory('Arctic')">
+        <div>
+          <i class="filter-op fa-solid fa-snowflake"></i>
+        </div>
+        <p>Arctic</p>
+      </div>
+    </div>
+
+    <div class="tax-toggle-container">
+      <div class="tax-toggle">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+          <label class="form-check-label" for="switchCheckDefault">Show Taxes</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3 ">
+  <% for (let list of allListings) { %>
+    <a href="/listings/<%= list._id %>" class="listingLink">
+      <div class="card col main-card mb-5">
+        <img class="card-img-top" src="<%= list.image.url %>" alt="listing img">
+        <div class="card-body">
+          <p class="card-text">
+            <b><%= list.title %></b><br>
+            <b>&#8377; <%= list.price.toLocaleString("en-in") %> /day</b>
+            <i class="tax-info">+18% GST</i><br>
+          </p>
+        </div>
+      </div>
+    </a>
+  <% } %>
+</div>
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    console.log("clicked");
+    let taxInfo = document.querySelectorAll(".tax-info");
+    if (taxSwitch.checked) {
+      taxInfo.forEach((info) => {
+        info.style.display = "inline";
+      });
+    } else {
+      taxInfo.forEach((info) => {
+        info.style.display = "none";
+      });
+    }
+  });
+
+  function filterByCategory(category) {
+  console.log("Filtering by category: ", category);
+  const query = new URLSearchParams(window.location.search);
+  query.set('category', category);
+  window.location.search = query.toString(); // Reload the page with the new query
+}
+
+</script>

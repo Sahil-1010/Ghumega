@@ -1,0 +1,160 @@
+<!-- views/listings/profile.ejs -->
+<% layout('layouts/boilerplate') %>
+<style>
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    /* Profile Card Styling */
+    .profile-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 2rem;
+        text-align: center;
+        margin: 0 auto;
+        max-width: 500px;
+    }
+    
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* Listings Grid Layout */
+    .listings-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .listing-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .listing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .listing-img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .listing-body {
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    
+    .listing-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .listing-btn {
+        align-self: flex-start;
+        margin-top: auto;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1199.98px) {
+        .listings-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .listings-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .profile-card {
+            padding: 1.5rem;
+            max-width: 100%;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+        }
+    }
+    
+    @media (min-width: 1400px) {
+        .container {
+            max-width: 1320px;
+        }
+    }
+    
+    /* Empty State */
+    .no-listings {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 2rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+</style>
+    
+
+    </style>
+    
+    <div class="container py-5">
+        <div class="profile-container">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <img src="<%= currUser.profileImage || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' %>" 
+                     class="profile-img" 
+                     alt="Profile Image">
+                <h3><%= currUser.username %></h3>
+                <p class="text-muted mb-3"><%= currUser.email %></p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="/listings/new" class="btn btn-primary">Create Listing</a>
+                    <a href="/logout" class="btn btn-outline-danger">Logout</a>
+                    <% if (currUser && currUser._id.toString() === ADMIN_ID) { %>
+                        <a href="/admin" class="btn btn-outline-warning">Admin Panel</a>
+                    <% } %>                                       
+                </div>
+            </div>
+            
+            <!-- Listings Grid -->
+            <div class="listings-grid">
+                <% if (listings && listings.length > 0) { %>
+                    <% listings.forEach(listing => { %>
+                        <div class="listing-card">
+                            <img src="<%= listing.image.url %>" 
+                                 class="listing-img" 
+                                 alt="<%= listing.title %>">
+                            <div class="listing-body">
+                                <h5 class="listing-title"><%= listing.title %></h5>
+                                <p class="text-muted mb-3"><%= listing.description.substring(0, 100) %>...</p>
+                                <a href="/listings/<%= listing._id %>" class="btn btn-primary listing-btn">View Details</a>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-listings">
+                        <h4>You haven't created any listings yet</h4>
+                        <p class="text-muted mb-3">Start by creating your first listing</p>
+                        <a href="/listings/new" class="btn btn-primary">Create Listing</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
