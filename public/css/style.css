@@ -8,47 +8,76 @@ body{
     flex:1;
 }
 /* navbar----------------------------------------------------- */
-/* For small screens (e.g., phones) */
-/* For small screens (e.g., phones) */
-@media (max-width: 767px) {
-    /* Apply background color to the expanded navbar options */
-    .navbar-collapse.show {
-      background-color: antiquewhite;
-    }
-    .navbar-collapse {
-        transition: none;
-      }
-  }
-
-.navbar{
-    height: 5rem;
-    /* position: fixed; */
+.navbar {
+    min-height: 4rem;
     background-color: antiquewhite;
+    overflow: visible;
 }
 
-.navbar-nav{
+.navbar-nav {
     display: flex;
-    justify-items: center;
     align-items: center;
 }
-.navbar a{
+
+.navbar a {
     font-size: large;
     font-weight: bold;
 }
-.nav-link:hover{
+
+.nav-link {
+    color: #222222 !important;
+}
+
+.nav-link:hover {
     text-decoration: underline;
     border: 1px dotted black;
     border-radius: 20px;
     box-shadow: 2px 1px 2px 1px black;
 }
 
-.app-logo{
+.app-logo {
     color: rgb(255, 94, 0);
-    font-size: 3.5rem;
+    font-size: 3rem;
 }
 
-.nav-link{
-    color:#222222 !important;
+/* Mobile — collapsed menu open */
+@media (max-width: 767.98px) {
+    .navbar-collapse.show,
+    .navbar-collapse.collapsing {
+        background-color: antiquewhite;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0.75rem 0.5rem 1rem;
+    }
+
+    /* Search form takes full row width */
+    .search-form {
+        width: 100% !important;
+        margin: 0.5rem 0;
+    }
+    .search-input {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    /* Right-side nav items left-align and wrap on mobile */
+    .nav-right {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.25rem;
+        padding: 0.25rem 0;
+    }
+
+    /* Prevent dropdown from going off-screen */
+    .dropdown-menu {
+        position: static !important;
+        float: none;
+        width: auto;
+        margin-top: 0;
+        box-shadow: none;
+    }
 }
 
 

@@ -3,20 +3,39 @@
         background-color: rgb(255, 94, 0);
         color: white;
         border-radius: 20px;
-        padding: 0 1rem 0 1rem;
+        padding: 0 1rem;
+        white-space: nowrap;
     }
     .btn-search:hover {
-        background-color: rgb(255, 94, 0);
+        background-color: rgb(215, 74, 0);
         color: white;
     }
-    .btn-search i{
+    .btn-search i {
         display: inline;
         margin-right: 0.5rem;
     }
-    .search-input{
+    .search-input {
         border-radius: 20px;
-        padding: 0.5rem 1rem 0.5rem 1rem;
-        width: 300px;
+        padding: 0.5rem 1rem;
+        min-width: 0;
+    }
+    .search-form {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    @media (max-width: 767.98px) {
+        .search-form {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+        .search-input {
+            flex: 1 1 0;
+            width: 100%;
+        }
+        .nav-right {
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
     }
 </style>
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
@@ -25,50 +44,48 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup" style="gap: 0.5rem;">
+          <div class="navbar-nav me-2">
               <a class="nav-link" href="/listings">Explore</a>
           </div>
-          <div class="navbar-nav ms-auto"> 
-            <div class="container-fluid">
-                <form class="d-flex" role="search" method="GET" action="/listings">
-                    <input
-                      class="form-control me-2 search-input"
-                      type="search"
-                      placeholder="Search Destiny"
-                      aria-label="Search"
-                      name="search"
-                    />
-                    <button class="btn btn-search" type="submit">
-                      <i class="fa-solid fa-magnifying-glass"></i>Search
-                    </button>
-                  </form>                  
-              </div>
-          </div>
-          <div class="navbar-nav ms-auto">
+
+          <form class="d-flex search-form" role="search" method="GET" action="/listings">
+              <input
+                class="form-control me-2 search-input"
+                type="search"
+                placeholder="Search Destiny"
+                aria-label="Search"
+                name="search"
+              />
+              <button class="btn btn-search" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>Search
+              </button>
+          </form>
+
+          <div class="navbar-nav ms-auto align-items-center nav-right">
             <a class="nav-link" href="/listings/new">Add New</a>
-             <% if(!locals.currUser){ %>
-                <a class="nav-link" aria-current="page" href="/signup"><b>Sign Up</b></a>
+            <% if (!currUser) { %>
+                <a class="nav-link" href="/signup"><b>Sign Up</b></a>
                 <a class="nav-link" href="/login"><b>Login</b></a>
-                <% }%>
-                <% if(locals.currUser){ %>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <img src="<%= currUser.profileImage || 'https://t3.ftcdn.net/jpg/07/62/37/24/360_F_762372494_0jJCh4efbXYIAkKJmXxK2eWS8wuaVpQS.jpg' %>"
-                                 alt="Profile"
-                                 style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-                            <%= currUser.username %>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/profile">My Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                        </ul>
-                    </li>
+            <% } else { %>
+                <% if (currUser._id.toString() === ADMIN_ID) { %>
+                    <a class="nav-link text-danger fw-bold" href="/admin">Admin Panel</a>
                 <% } %>
-        </div>
+                <li class="nav-item dropdown list-unstyled">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="<%= currUser.profileImage || 'https://t3.ftcdn.net/jpg/07/62/37/24/360_F_762372494_0jJCh4efbXYIAkKJmXxK2eWS8wuaVpQS.jpg' %>"
+                             alt="Profile"
+                             style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+                        <%= currUser.username %>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/profile">My Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            <% } %>
+          </div>
       </div>
   </div>
 </nav>
-<div class="container" style="padding-top: 60px;">
-  </div>

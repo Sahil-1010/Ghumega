@@ -21,63 +21,51 @@ const flash=require("connect-flash");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const User=require("./models/user.js");
-// const { isLoggedIn, findUserListings } = require('./middleware');
-
 
 const listingRouter=require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
-const { all } = require("axios");
 
 
 
 app.use(express.urlencoded({extended:true}));
-
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")));
 
 app.engine('ejs',ejsMate);
-
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 
-// In app.js, fix the typo in session options:
-
 const store = MongoStore.create({
     mongoUrl: dbUrl,
-    crypto:{
-        secret:process.env.SECRET
-    },
-    touchAfter: 24 * 60 * 60, // time period in seconds
+    crypto:{ secret: process.env.SECRET },
+    touchAfter: 24 * 60 * 60,
 });
 
-store.on("error",(e)=>{
-    console.log("session store error",e);
+store.on("error", (e) => {
+    console.log("Session store error:", e);
 });
 
 const sessionOption = {
     store,
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,  // Fixed typo here (was saveUinitialized)
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     },
 };
 
-app.use(session(sessionOption));
-app.use(flash());
-
-
-
-app.use(passport.initialize());
-app.use(passport.session());
+// Passport config must come BEFORE passport middleware
 passport.use(new LocalStrategy(User.authenticate()));
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(session(sessionOption));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use((req,res,next)=>{
@@ -85,7 +73,7 @@ app.use((req,res,next)=>{
     res.locals.error=req.flash("error");
     res.locals.currUser=req.user;
     res.locals.ADMIN_ID = process.env.ADMIN_ID;
-    // console.log(res.locals.success);
+    console.log(`[AUTH] ${req.method} ${req.path} → user: ${req.user ? req.user.username : "guest"}`);
     next();
 });
 

@@ -16,14 +16,20 @@ module.exports.signup = async (req, res, next) => {
         const newUser = new User({ username, email });
         const registeredUser = await User.register(newUser, password);
 
-        req.login(registeredUser, (err) => {
+        req.login(registeredUser, { keepSessionInfo: true }, (err) => {
             if (err) return next(err);
-            req.flash("success", "Logged in successfully. Welcome " + req.user.username);
-            res.redirect("/listings");
+            req.flash("success", "Welcome to Ghumega, " + req.user.username + "!");
+            req.session.save((saveErr) => {
+                if (saveErr) console.error("[Session Save Error]:", saveErr);
+                res.redirect("/listings");
+            });
         });
     } catch (err) {
         req.flash("error", err.message);
-        res.redirect("/signup");
+        req.session.save((saveErr) => {
+            if (saveErr) console.error("[Session Save Error]:", saveErr);
+            res.redirect("/signup");
+        });
     }
 };
 
@@ -32,11 +38,33 @@ module.exports.renderLogin = (req, res) => {
     res.render("users/login.ejs");
 };
 
-// Login Handler After Passport Auth
-module.exports.loginHandler = async (req, res) => {
-    const redirectUrl = res.locals.redirectUrl || "/listings";
-    req.flash("success", "Logged in successfully. Welcome " + req.user.username);
-    res.redirect(redirectUrl);
+// Full login flow — custom passport callback so we control every redirect and
+// can call req.session.save() before each one. Without this, Atlas latency
+// causes the session write to race with the browser following the redirect,
+// meaning req.user is undefined on the next request (blank navbar, lost flash).
+module.exports.loginHandler = (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+
+        if (!user) {
+            const msg = (info && info.message) || "Invalid username or password.";
+            req.flash("error", msg);
+            return req.session.save((saveErr) => {
+                if (saveErr) console.error("[Session Save Error]:", saveErr);
+                res.redirect("/login");
+            });
+        }
+
+        req.logIn(user, { keepSessionInfo: true }, (loginErr) => {
+            if (loginErr) return next(loginErr);
+            req.flash("success", "Welcome back, " + user.username + "!");
+            const redirectUrl = res.locals.redirectUrl || "/listings";
+            req.session.save((saveErr) => {
+                if (saveErr) console.error("[Session Save Error]:", saveErr);
+                res.redirect(redirectUrl);
+            });
+        });
+    })(req, res, next);
 };
 
 // Logout
@@ -44,7 +72,10 @@ module.exports.logout = (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
         req.flash("success", "You logged out successfully!");
-        res.redirect("/listings");
+        req.session.save((saveErr) => {
+            if (saveErr) console.error("[Session Save Error]:", saveErr);
+            res.redirect("/listings");
+        });
     });
 };
 

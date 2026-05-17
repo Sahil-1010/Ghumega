@@ -1,5 +1,5 @@
 <!-- views/listings/profile.ejs -->
-<% layout('layouts/boilerplate') %>
+<% layout("/layouts/boilerplate") %>
 <style>
     .profile-container {
         display: flex;
@@ -101,7 +101,7 @@
             max-width: 1320px;
         }
     }
-    
+
     /* Empty State */
     .no-listings {
         grid-column: 1 / -1;
@@ -111,9 +111,6 @@
         border-radius: 8px;
     }
 </style>
-    
-
-    </style>
     
     <div class="container py-5">
         <div class="profile-container">
