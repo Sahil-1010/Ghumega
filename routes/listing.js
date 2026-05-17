@@ -26,15 +26,14 @@ router
    .get(wrapAsync(listingsController.index))
    .post(
       isLoggedIn,
-      validateListing,
       upload.single('listing[image]'),
+      validateListing,
       wrapAsync(listingsController.createListing)
    );
 
 router
    .route("/:id")
    .get(
-      validateListing,
       wrapAsync(listingsController.showListing))
    .put(
       isLoggedIn,
@@ -50,9 +49,7 @@ router
 //edit-------------------------------------------------------------------------------------------
 router.get("/:id/edit",
    isLoggedIn,
-   isOwner, 
-   upload.single('listing[image]'),
-   validateListing,
+   isOwner,
    wrapAsync(listingsController.renderEditForm));
 
 module.exports=router;

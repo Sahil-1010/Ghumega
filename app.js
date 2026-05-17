@@ -110,6 +110,7 @@ app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 
 //for home page==========================================================
+app.get("/", (req, res) => res.redirect("/listings"));
 
 //middlewares================================================================================
 app.all("*",    (req,res,next)=>{
@@ -124,6 +125,7 @@ app.use((err,req,res,next)=>{
 
 
 
-app.listen(8080,()=>{
-    console.log("server is listening on port 8080");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+    console.log(`server is listening on port ${PORT}`);
 });
