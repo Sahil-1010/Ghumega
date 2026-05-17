@@ -47,15 +47,15 @@
           </div>
           <div class="navbar-nav ms-auto">
             <a class="nav-link" href="/listings/new">Add New</a>
-             <% if(!currUser){ %>
+             <% if(!locals.currUser){ %>
                 <a class="nav-link" aria-current="page" href="/signup"><b>Sign Up</b></a>
                 <a class="nav-link" href="/login"><b>Login</b></a>
                 <% }%>
-                <% if(currUser){ %>
+                <% if(locals.currUser){ %>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <img src="<%= currUser.profileImage || 'https://t3.ftcdn.net/jpg/07/62/37/24/360_F_762372494_0jJCh4efbXYIAkKJmXxK2eWS8wuaVpQS.jpg' %>" 
-                                 alt="Profile" 
+                            <img src="<%= currUser.profileImage || 'https://t3.ftcdn.net/jpg/07/62/37/24/360_F_762372494_0jJCh4efbXYIAkKJmXxK2eWS8wuaVpQS.jpg' %>"
+                                 alt="Profile"
                                  style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
                             <%= currUser.username %>
                         </a>

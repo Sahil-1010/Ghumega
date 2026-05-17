@@ -1,4 +1,4 @@
-<% if(success && success.length){ %>
+<% if(locals.success && locals.success.length){ %>
     <div id="successAlert" class="alert alert-success alert-dismissible fade show mx-auto mt-4 shadow" role="alert" style="max-width: 600px;">
         <i class="bi bi-check-circle-fill me-2"></i> <!-- ✅ Fancy Icon -->
         <%= success %>
@@ -6,7 +6,7 @@
     </div>
 <% } %>
 
-<% if(error && error.length){ %>
+<% if(locals.error && locals.error.length){ %>
     <div id="errorAlert" class="alert alert-danger alert-dismissible fade show mx-auto mt-4 shadow" role="alert" style="max-width: 600px;">
         <i class="bi bi-exclamation-triangle-fill me-2"></i> <!-- ⚠️ Fancy Icon -->
         <%= error %>
